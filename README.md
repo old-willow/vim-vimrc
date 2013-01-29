@@ -1,5 +1,8 @@
 vim-files
 =========
 
-Collection of my vim related files.
-All these files are mostly for my backup but if anyone find something interesting in them they are free!
+I intend to collect here all my Vim related files.
+
+They are pretty messy, with time probably I'll make them much organized.
+
+But if someone finds something usefull I'll be happy.
