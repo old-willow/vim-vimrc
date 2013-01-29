@@ -1,4 +1,4 @@
-mvim-files
+vim-files
 =========
 
 Collection of my vim related files.
