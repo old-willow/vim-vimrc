@@ -1,6 +1,6 @@
 " File: .vimrc
 " Author: Kolozsi Robert <kolozsi.robert@gmail.com>
-" Date: Jan 28, 2013 (last modified)
+" Date: March 28, 2013 (last modified)
 " Setup collection.
 
 " Automaticaly reloads my .vimrc file.
@@ -86,9 +86,10 @@ set number
 "set ignorecase
 set smartcase
 set scrolloff=3 " Cursor offset from screen sides.
-set tw=79  " Width of document.
+"set tw=120  " Width of document.
+"set colorcolumn=+1  " Related to the 'tw' setting above.
 
-" Show tab and newlinel chars.
+" Show tab and newline chars.
 set list
 set listchars=tab:→\ ,eol:⏎,extends:>,precedes:<
 
@@ -109,10 +110,8 @@ set fileformat=unix " (&ffs)
 " set dictionary=/home/robi/dict/words
 " set spellfile=~/.vim/spell/hunspchk.vim
 
-set colorcolumn=+1  " Related to the 'tw' setting above.
-
-" Don't try to highlight lines longer then 800 characters.
-set synmaxcol=800
+" Don't try to highlight lines longer then 200 characters.
+set synmaxcol=200
 
 " Time out on key codes but not mappings.
 " Don't know for what is this yet????
@@ -122,30 +121,43 @@ set synmaxcol=800
 
 "set nowrap "don't automatically wrap on load
 set wrap
-"set fo-=t " don't automatically wrap text when typing
+set fo-=t " don't automatically wrap text when typing
 "set visualbell
 set linebreak
 
+" Clean old highlight searches
+augroup no_highlighting
+    au!
+    au! FileType * nohl
+augroup END
+
+augroup python_editing
+    autocmd!
+    autocmd FileType python set tw=80
+    autocmd FileType python set colorcolumn=+1
+augroup END
+
+augroup javascript_editing
+    autocmd!
+    autocmd FileType javascript set tw=120
+    autocmd FileType javascript set colorcolumn=+1
+augroup END
+
+augroup vim_editing
+    autocmd!
+    autocmd FileType vim set tw=80
+    autocmd FileType vim set colorcolumn=+1
+augroup END
+
+augroup html_editing
+    autocmd!
+    autocmd FileType html set tw=120
+    autocmd FileType html set colorcolumn=+1
+    autocmd FileType html set nowrap
+    autocmd FileType html set nolinebreak
+augroup END
+
 " Color Schemas {{{
-"
-" SOLARIZED HEX     16/8 TERMCOL  XTERM/HEX   L*A*B      sRGB        HSB
-" --------- ------- ---- -------  ----------- ---------- ----------- -----------
-" base03    #002b36  8/4 brblack  234 #1c1c1c 15 -12 -12   0  43  54 193 100  21
-" base02    #073642  0/4 black    235 #262626 20 -12 -12   7  54  66 192  90  26
-" base01    #586e75 10/7 brgreen  240 #4e4e4e 45 -07 -07  88 110 117 194  25  46
-" base00    #657b83 11/7 bryellow 241 #585858 50 -07 -07 101 123 131 195  23  51
-" base0     #839496 12/6 brblue   244 #808080 60 -06 -03 131 148 150 186  13  59
-" base1     #93a1a1 14/4 brcyan   245 #8a8a8a 65 -05 -02 147 161 161 180   9  63
-" base2     #eee8d5  7/7 white    254 #d7d7af 92 -00  10 238 232 213  44  11  93
-" base3     #fdf6e3 15/7 brwhite  230 #ffffd7 97  00  10 253 246 227  44  10  99
-" yellow    #b58900  3/3 yellow   136 #af8700 60  10  65 181 137   0  45 100  71
-" orange    #cb4b16  9/3 brred    166 #d75f00 50  50  55 203  75  22  18  89  80
-" red       #dc322f  1/1 red      160 #d70000 50  65  45 220  50  47   1  79  86
-" magenta   #d33682  5/5 magenta  125 #af005f 50  65 -05 211  54 130 331  74  83
-" violet    #6c71c4 13/5 brmagenta 61 #5f5faf 50  15 -45 108 113 196 237  45  77
-" blue      #268bd2  4/4 blue      33 #0087ff 55 -10 -45  38 139 210 205  82  82
-" cyan      #2aa198  6/6 cyan      37 #00afaf 60 -35 -05  42 161 152 175  74  63
-" green     #859900  2/2 green     64 #5f8700 60 -20  65 133 153   0  68 100  60
 "
 " Solarized colorscheme setup for terminal.
 "let g:solarized_termcolors=256
@@ -155,12 +167,13 @@ set background=dark
 
 " Personal color scheme settings.
 set t_Co=256
-colorscheme gandalf " based on xoria256
+colorscheme gandalf " mixed and based on xoria256 & solarized
 set guifont=courier_new:h10 | "for GUI!
 " }}}
 
 " Search settings.
-execute "normal! <silent> :nohlsearch\<cr>"
+" This should be to turn off hightlight search on file opening.
+" execute 'normal! <silent> :nohlsearch\<cr>'
 set hlsearch
 set incsearch
 "set ignorecase
@@ -210,7 +223,7 @@ set foldenable "fold by default
 set foldlevel=2
 set foldcolumn=4
 
-" Clipboard
+" Clipboard. Can't understand why but this makes possible to copy/paste between applications.
 "set clipboard=unnamed
 set clipboard=unnamed
 "set clipboard=unnamedplus
@@ -289,9 +302,7 @@ nnoremap <down> <nop>
 
 " Have to restart vim if adding autocmd.
 augroup code_commenting
-    " First clear group to avoid duplication of autocmds!
     autocmd!
-    " Then do the rest...
     autocmd FileType vim nnoremap <buffer> <localleader>c I"
     autocmd FileType c nnoremap <buffer> <localleader>c I//
     autocmd FileType cplusplus nnoremap <buffer> <localleader>c I//
@@ -311,7 +322,6 @@ augroup code_snipets
                 \ iff if <cr>endif<esc><up>A
     autocmd FileType vim :inoremap <buffer> ww while <cr>endwhile<esc><up>A
     autocmd FileType vim :inoremap <buffer> funn function! <cr><cr>endfunction<esc>2<u>A
-    autocmd FileType vim :inoremap <buffer> aa BBBB
 augroup END
 
 " Normal mode mapings.
