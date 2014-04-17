@@ -133,8 +133,10 @@ augroup END
 
 augroup python_editing
     autocmd!
-    autocmd FileType python set tw=80
+    autocmd FileType python set tw=79
     autocmd FileType python set colorcolumn=+1
+    autocmd FileType html set wrap
+    autocmd FileType html set linebreak
 augroup END
 
 augroup javascript_editing
@@ -145,16 +147,20 @@ augroup END
 
 augroup vim_editing
     autocmd!
-    autocmd FileType vim set tw=80
+    autocmd FileType vim set tw=79
     autocmd FileType vim set colorcolumn=+1
 augroup END
 
 augroup html_editing
     autocmd!
     autocmd FileType html set tw=120
+    autocmd FileType htmldjango set tw=120
     autocmd FileType html set colorcolumn=+1
+    autocmd FileType htmldjango set colorcolumn=+1
     autocmd FileType html set nowrap
+    autocmd FileType htmldjango set nowrap
     autocmd FileType html set nolinebreak
+    autocmd FileType htmldjango set nolinebreak
 augroup END
 
 " Color Schemas {{{
@@ -187,7 +193,7 @@ set backupdir=./.backup,~/tmp
 set directory=./.swap,~/tmp
 " Creating localy .backup & .swap directory
 " if there are not existing in current/working dir.
-autocmd BufWritePre * :call CheckBackupSwapDirs()
+autocmd! BufWritePre * :call CheckBackupSwapDirs()
 function! CheckBackupSwapDirs()
     if !isdirectory("./.backup") && filewritable(".")
         silent execute "normal! :!mkdir .backup\<cr>"
@@ -262,7 +268,9 @@ nnoremap <F8> :!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
 inoremap {{     {}<left>
 inoremap {<cr>  {<cr>}<esc>O
 inoremap [[     []<left>
+inoremap [<cr>  [<cr>]<esc>O
 inoremap ((     ()<left>
+inoremap (<cr>  (<cr>)<esc>O
 inoremap ""     ""<left>
 inoremap ''     ''<left>
 
@@ -444,5 +452,8 @@ let g:SignatureWrapJumps=1
 "let g:SignaturePurgeConfirmation=0
 "let g:SignatureDisableMenu=0
 "let g:SignaturePeriodicRefresh=1
+
+" Some shortcuts from
+" http://eastcoastefx.vaesite.com/vim
 
 " vim: set tw=79 colorcolumn=+1:
