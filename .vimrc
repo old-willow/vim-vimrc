@@ -173,7 +173,8 @@ set background=dark
 
 " Personal color scheme settings.
 set t_Co=256
-colorscheme gandalf " mixed and based on xoria256 & solarized
+colorscheme gandalf-transparent " based on gandalf scheme
+"colorscheme gandalf " mixed and based on xoria256 & solarized
 set guifont=courier_new:h10 | "for GUI!
 " }}}
 
