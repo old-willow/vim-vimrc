@@ -11,8 +11,7 @@ set nocompatible " Not compatible with Vi!
 syntax on
 filetype on
 filetype plugin on
-filetype plugin indent on
-" set ofu=syntaxcomplete#Complete
+filetype plugin indent on " set ofu=syntaxcomplete#Complete
 " syntaxcomplete.vim plugin
 " http://www.vim.org/scripts/script.php?script_id=3172
 if has("autocmd") && exists("+omnifunc")
@@ -65,6 +64,16 @@ set shiftround "" Don't understand for what is this for.
 " Indentention
 set autoindent
 set smartindent
+"
+" This should switch of the no indent in python comment
+" when typing # in new line. The ^H characters are
+" done by CTRL+v CTRL+h
+inoremap # X#
+
+" This should maybe restriced to python files?
+" But it seams doesn't work!
+"autocmd BufRead *.py inoremap #X<c-h>#<space>
+
 
 " Misc.
 set cursorline
@@ -75,6 +84,7 @@ set showmode
 set showcmd
 set hidden "Keep undo history when switching buffers??? Don't know yet what is this!!!!!
 set ttyfast
+set lazyredraw  " This solved vim's slow response when syntax higlighting in on.
 " set backspace=indent,eol,start
 set showmatch
 set title
@@ -111,7 +121,7 @@ set fileformat=unix " (&ffs)
 " set spellfile=~/.vim/spell/hunspchk.vim
 
 " Don't try to highlight lines longer then 200 characters.
-set synmaxcol=200
+set synmaxcol=300
 
 " Time out on key codes but not mappings.
 " Don't know for what is this yet????
@@ -173,8 +183,8 @@ set background=dark
 
 " Personal color scheme settings.
 set t_Co=256
-colorscheme gandalf-transparent " based on gandalf scheme
-"colorscheme gandalf " mixed and based on xoria256 & solarized
+"colorscheme gandalf-transparent " based on gandalf scheme
+colorscheme gandalf " mixed and based on xoria256 & solarized
 set guifont=courier_new:h10 | "for GUI!
 " }}}
 
@@ -369,6 +379,8 @@ nnoremap <leader><space> i <esc><right>a <left><esc>
 " curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 " Now you can install any plugin into a .vim/bundle/plugin-name/ folder
 call pathogen#infect()
+call pathogen#helptags()
+filetype plugin indent on
 
 " Settings for Python IDE environment
 " cd ~/.vim/bundle
@@ -391,12 +403,39 @@ set wildignore+=*/coverage/*
 " cd ~/.vim/bundle
 " git clone https://github.com/klen/python-mode
 "nnoremap <leader>g :call RopeGotoDefinition()<cr>
-"let ropevim_enable_shortcuts=1
-"let g:pymode_breakpoint=1
-"let g:pymode_syntax=1
-"let g:pymode_syntax_builtin_objs=1
-"let g:pymode_syntax_builtin_funcs=1
-"nnoremap <leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<c-c>
+"let g:pymode = 1
+"let g:pymode_warnings = 1
+"let g:pymode_trim_whitespaces = 1
+"let g:pymode_options = 1
+" pymode quickfix
+"let g:pymode_quickfix_minheight = 3
+"let g:pymode_quickfix_maxheight = 6
+"let g:pymode_indent = []
+"let g:pymode_folding = 1
+"let g:pymode_motion = 1
+"let g:pymode_doc = 1 " :PymodeDoc
+"let g:pymode_virtualenv = 1
+"let g:pymode_run = 1 " :PymodeRun
+"let g:pymode_breakpoint = 1 " <leader>b
+"let g:pymode_lint = 1
+"let g:pymode_lint_on_write = 1
+"let g:pymode_lint_on_fly = 0
+"let g:pymode_lint_message = 1
+"let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+"let g:pymode_lint_signs = 1
+"let g:pymode_lint_todo_symbol = 'WW'
+"let g:pymode_lint_comment_symbol = 'CC'
+"let g:pymode_lint_visual_symbol = 'RR'
+"let g:pymode_lint_error_symbol = 'EE'
+"let g:pymode_lint_info_symbol = 'II'
+"let g:pymode_lint_pyflakes_symbol = 'FF'
+"let g:pymode_rope = 1
+"let g:pymode_rope_completion = 1
+"let g:pymode_rope_complete_on_dot = 1
+"pymode syntax
+"let g:pymode_syntax = 1
+"let g:pymode_syntax_all = 1
+
 
 " Navigating through omnicomplete option list
 " See http://stackowerflow.com/questions/2170023/how-to-map-keys-for-popup-menu-in-vim
