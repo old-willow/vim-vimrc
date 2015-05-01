@@ -285,15 +285,55 @@ inoremap (<cr>  (<cr>)<esc>O
 inoremap ""     ""<left>
 inoremap ''     ''<left>
 
+"inoremap <<      <><left>
+"inoremap </     </><left>
+"inoremap <i     <img src="" /><esc>3hi
+"inoremap <p     <p></p><esc>3hi
+"inoremap <d     <div></div><esc>5hi
+""inoremap <u     <u><cr></u><esc><Up>
+"inoremap <i     <i></i><esc>3hi
+"inoremap <in    <input type="" /><esc>3hi
+
+
+" Java omnicomplete {{{
+"if has("autocmd")
+"    :autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+"endif
+" }}}
+
 " HTML mappings.
-inoremap <<      <><left>
-inoremap </     </><left>
-inoremap <i     <img src="" /><esc>3hi
-inoremap <p     <p></p><esc>3hi
-inoremap <d     <div></div><esc>5hi
-"inoremap <u     <u><cr></u><esc><Up>
-inoremap <i     <i></i><esc>3hi
-inoremap <in    <input type="" /><esc>3hi
+augroup html_mapings
+    autocmd!
+    " Django template mappings.
+    autocmd FileType html :inoremap <buffer> %% {%  %}<esc>2hi
+    autocmd FileType html :inoremap <buffer> }} {{  }}<esc>2hi
+    autocmd FileType html :inoremap <buffer> %i {% if   %}<esc>3hi
+    autocmd FileType html :inoremap <buffer> %l {% else %}
+    autocmd FileType html :inoremap <buffer> %e {% endif %}<esc>o<esc>
+    autocmd FileType html :inoremap <buffer> %f {% for   in %}<esc>6hi
+    autocmd FileType html :inoremap <buffer> %ef {% endfor %}<esc>o<esc>
+    autocmd FileType html :inoremap <buffer> %c {% comment %}<esc>o<esc>
+    autocmd FileType html :inoremap <buffer> %ec {% endcomment %}<esc>o<esc>
+
+    " Basic HTML mappings.
+    autocmd FileType html :inoremap <<  <><left>
+    autocmd FileType html :inoremap </ </><left>
+    autocmd FileType html :inoremap <im <img src="" /><esc>3hi
+    autocmd FileType html :inoremap <p <p></p><esc>3hi
+    autocmd FileType html :inoremap <d <div></div><esc>5hi
+    autocmd FileType html :inoremap <u <u><cr></u><esc><Up>
+    autocmd FileType html :inoremap <i <i></i><esc>3hi
+    autocmd FileType html :inoremap <in <input type="" /><esc>3hi
+augroup END
+
+"inoremap %%     {%   %}<esc>3hi
+"inoremap }}     {{   }}<esc>3hi
+"inoremap %i    {% if   %}<esc>3hi
+"inoremap %l    {% else %}
+"inoremap %e    {% endif %}<esc>o<esc>
+"inoremap %f    {% for   in %}<esc>6hi
+"inoremap %ef    {% endfor %}<esc>o<esc>
+
 
 " C, JavaScript comment mappings.
 " inoremap /**     /*  */<Left><Left><Left>
@@ -332,7 +372,7 @@ augroup END
 
 augroup code_snipets
     autocmd!
-    autocmd FileType python :inoremap <buffer> iff if :<left>
+    autocmd FileType python :inoremap <buffer> iff if  :<left>
     autocmd FileType javascript :inoremap <buffer>
                 \ iff if (; ; ) {<cr>}<esc>O;<esc><up>$5hi<left>
     autocmd FileType c :inoremap <buffer>
@@ -378,9 +418,13 @@ nnoremap <leader><space> i <esc><right>a <left><esc>
 " mkdir -p ~/.vim/autoload ~/.vim/bundle
 " curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
 " Now you can install any plugin into a .vim/bundle/plugin-name/ folder
+filetype off
+
 call pathogen#infect()
 call pathogen#helptags()
+
 filetype plugin indent on
+syntax on
 
 " Settings for Python IDE environment
 " cd ~/.vim/bundle
@@ -403,21 +447,21 @@ set wildignore+=*/coverage/*
 " cd ~/.vim/bundle
 " git clone https://github.com/klen/python-mode
 "nnoremap <leader>g :call RopeGotoDefinition()<cr>
-"let g:pymode = 1
-"let g:pymode_warnings = 1
-"let g:pymode_trim_whitespaces = 1
-"let g:pymode_options = 1
+let g:pymode = 1
+let g:pymode_warnings = 1
+let g:pymode_trim_whitespaces = 1
+let g:pymode_options = 1
 " pymode quickfix
 "let g:pymode_quickfix_minheight = 3
 "let g:pymode_quickfix_maxheight = 6
 "let g:pymode_indent = []
 "let g:pymode_folding = 1
 "let g:pymode_motion = 1
-"let g:pymode_doc = 1 " :PymodeDoc
-"let g:pymode_virtualenv = 1
+let g:pymode_doc = 1 " :PymodeDoc
+let g:pymode_virtualenv = 1
 "let g:pymode_run = 1 " :PymodeRun
 "let g:pymode_breakpoint = 1 " <leader>b
-"let g:pymode_lint = 1
+let g:pymode_lint = 1
 "let g:pymode_lint_on_write = 1
 "let g:pymode_lint_on_fly = 0
 "let g:pymode_lint_message = 1
