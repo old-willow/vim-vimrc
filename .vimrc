@@ -1,4 +1,3 @@
-" File: .vimrc
 " Author: Kolozsi Robert <kolozsi.robert@gmail.com>
 " Date: March 28, 2013 (last modified)
 " Setup collection.
@@ -26,6 +25,11 @@ let mapleader=","
 " maplocalleader mappings that only take effect for certain types of files.
 let maplocalleader="\\"
 
+
+" Powerline setup.
+python from powerline.vim import setup as powerline_setup
+python powerline_setup()
+python del powerline_setup
 
 " Selection stays while moving indentation.
 vnoremap < <gv
@@ -68,7 +72,7 @@ set smartindent
 " This should switch of the no indent in python comment
 " when typing # in new line. The ^H characters are
 " done by CTRL+v CTRL+h
-inoremap # X#
+inoremap # #
 
 " This should maybe restriced to python files?
 " But it seams doesn't work!
@@ -242,10 +246,11 @@ set foldcolumn=4
 
 " Clipboard. Can't understand why but this makes possible to copy/paste between applications.
 "set clipboard=unnamed
-set clipboard=unnamed
-"set clipboard=unnamedplus
+"set clipboard=unnamed
+set clipboard=unnamedplus " Sets all yenks and dels to the system clipbard.
 "set clipboard+=autoselect
-set nopaste
+"set nopaste
+"set paste
 
 "augroup folding " {{{1
 "    autocmd!
@@ -420,8 +425,9 @@ nnoremap <leader><space> i <esc><right>a <left><esc>
 " Now you can install any plugin into a .vim/bundle/plugin-name/ folder
 filetype off
 
-call pathogen#infect()
-call pathogen#helptags()
+"call pathogen#infect()
+execute pathogen#infect()
+"call pathogen#helptags()
 
 filetype plugin indent on
 syntax on
@@ -430,9 +436,9 @@ syntax on
 " cd ~/.vim/bundle
 " git clone git://github.com/Lokaltog/vim-powerline.git
 " laststaus=0 -> never, =1 -> default (2 or more windows) and =2 -> always.
-let g:Powerline_symbols="fancy"
+"let g:Powerline_symbols="fancy"
 "call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
-set rtp+=/home/robi/.vim/bundle/powerline/powerline/bindings/vim
+"set rtp+=/home/robi/.vim/bundle/powerline/powerline/bindings/vim
 set laststatus=2
 
 " Settings for ctrlp
