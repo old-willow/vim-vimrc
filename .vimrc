@@ -306,30 +306,46 @@ inoremap ''     ''<left>
 "endif
 " }}}
 
+" Have to restart vim if adding autocmd.
 " HTML mappings.
-augroup html_mapings
+augroup html_mappings
     autocmd!
     " Django template mappings.
-    autocmd FileType html :inoremap <buffer> %% {%  %}<esc>2hi
-    autocmd FileType html :inoremap <buffer> }} {{  }}<esc>2hi
-    autocmd FileType html :inoremap <buffer> %i {% if   %}<esc>3hi
-    autocmd FileType html :inoremap <buffer> %l {% else %}
-    autocmd FileType html :inoremap <buffer> %e {% endif %}<esc>o<esc>
-    autocmd FileType html :inoremap <buffer> %f {% for   in %}<esc>6hi
-    autocmd FileType html :inoremap <buffer> %ef {% endfor %}<esc>o<esc>
-    autocmd FileType html :inoremap <buffer> %c {% comment %}<esc>o<esc>
-    autocmd FileType html :inoremap <buffer> %ec {% endcomment %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %% {%  %}<esc>2hi
+    autocmd FileType htmldjango :inoremap <buffer> }} {{  }}<esc>2hi
+    autocmd FileType htmldjango :inoremap <buffer> %i {% if   %}<esc>3hi
+    autocmd FileType htmldjango :inoremap <buffer> %l {% else %}
+    autocmd FileType htmldjango :inoremap <buffer> %e {% endif %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %f {% for   in %}<esc>6hi
+    autocmd FileType htmldjango :inoremap <buffer> %ef {% endfor %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %c {% comment %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %ec {% endcomment %}<esc>o<esc>
 
     " Basic HTML mappings.
+    " First autocmd should be checked because the indentation is not correct.
+    autocmd FileType html :inoremap <html <DOCTYPE! html><cr><html lang="en_us"><cr></html><esc>O<head><cr><tab><meta charset="utf-8"><cr><title></title><cr><link rel="stylesheet" type="text/css" href="" /><cr><script type="text/javascript" src=""></script><cr></head><esc>o<cr><body><cr></body><esc>
+    autocmd FileType html :inoremap }} {{  }}<esc>2hi
     autocmd FileType html :inoremap <<  <><left>
     autocmd FileType html :inoremap </ </><left>
-    autocmd FileType html :inoremap <im <img src="" /><esc>3hi
+    autocmd FileType html :inoremap <img <img src="" /><esc>3hi
     autocmd FileType html :inoremap <p <p></p><esc>3hi
     autocmd FileType html :inoremap <d <div></div><esc>5hi
     autocmd FileType html :inoremap <u <u><cr></u><esc><Up>
     autocmd FileType html :inoremap <i <i></i><esc>3hi
-    autocmd FileType html :inoremap <in <input type="" /><esc>3hi
+    autocmd FileType html :inoremap <inp <input type="" /><esc>3hi
+    autocmd FileType html :inoremap h1 <h1></h1><esc>4hi
+    autocmd FileType html :inoremap h2 <h2></h2><esc>4hi
+    autocmd FileType html :inoremap h3 <h3></h3><esc>4hi
+    autocmd FileType html :inoremap h4 <h4></h4><esc>4hi
+    autocmd FileType html :inoremap h5 <h5></h5><esc>4hi
+    autocmd FileType html :inoremap h6 <h6></h6><esc>4hi
+    autocmd FileType html :inoremap <br <br /><cr>
+    autocmd FileType html :inoremap <buffer> <ul <ul><cr></ul><esc>O<li></li><esc>4hi
+    autocmd FileType html :inoremap <buffer> <sc <script type="text/javascript" src=""></script><esc>10hi
+    """""" Next is for commenting out visual selection!
+    autocmd FileType html :vnoremap <buffer> <leader>c <esc>a--><esc>'<i<!--<esc>'>$
 augroup END
+
 
 "inoremap %%     {%   %}<esc>3hi
 "inoremap }}     {{   }}<esc>3hi
@@ -364,8 +380,7 @@ nnoremap <right> <nop>
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 
-" Have to restart vim if adding autocmd.
-augroup code_commenting
+augroup code_line_commenting
     autocmd!
     autocmd FileType vim nnoremap <buffer> <localleader>c I"
     autocmd FileType c nnoremap <buffer> <localleader>c I//
@@ -412,6 +427,10 @@ nnoremap <leader>ww ea"<esc>bi"<esc>
 " Wrap a whole line with the single and double quote.
 nnoremap <leader>l I'<esc>A'<esc>
 nnoremap <leader>ll I"<esc>A"<esc>
+
+" Wrap a whole visual selection in curly braces.
+" vnoremap <leader>cb
+
 " Wrap the selection with single and double quote.
 vnoremap <leader>s <esc>`>a'<esc>`<i'<esc>
 vnoremap <leader>ss <esc>`>a"<esc>`<i"<esc>
@@ -453,21 +472,21 @@ set wildignore+=*/coverage/*
 " cd ~/.vim/bundle
 " git clone https://github.com/klen/python-mode
 "nnoremap <leader>g :call RopeGotoDefinition()<cr>
-let g:pymode = 1
-let g:pymode_warnings = 1
-let g:pymode_trim_whitespaces = 1
-let g:pymode_options = 1
+"let g:pymode = 1
+"let g:pymode_warnings = 1
+"let g:pymode_trim_whitespaces = 1
+"let g:pymode_options = 1
 " pymode quickfix
 "let g:pymode_quickfix_minheight = 3
 "let g:pymode_quickfix_maxheight = 6
 "let g:pymode_indent = []
 "let g:pymode_folding = 1
 "let g:pymode_motion = 1
-let g:pymode_doc = 1 " :PymodeDoc
-let g:pymode_virtualenv = 1
+"let g:pymode_doc = 1 " :PymodeDoc
+"let g:pymode_virtualenv = 1
 "let g:pymode_run = 1 " :PymodeRun
 "let g:pymode_breakpoint = 1 " <leader>b
-let g:pymode_lint = 1
+"let g:pymode_lint = 1
 "let g:pymode_lint_on_write = 1
 "let g:pymode_lint_on_fly = 0
 "let g:pymode_lint_message = 1
