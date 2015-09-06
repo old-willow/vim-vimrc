@@ -376,6 +376,7 @@ augroup html_mappings
     autocmd FileType html :inoremap <buffer> <ft <footer></footer><esc>8hi
     autocmd FileType html :inoremap <buffer> <fo <form action="" method=""><cr></form><esc>O
     autocmd FileType html :inoremap <buffer> <he <head><cr></head><esc>O
+    autocmd FileType html :inoremap <buffer> <tx <textarea name="" id="" cols="" rows=""></textarea><esc>10hi
 
     autocmd FileType html :inoremap <buffer> <st <script><cr></script><esc>O
     autocmd FileType html :inoremap <buffer> <st <style><cr></style><esc>O
