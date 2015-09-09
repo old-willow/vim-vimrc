@@ -87,6 +87,12 @@ set number
 set smartcase
 set scrolloff=3 " Cursor offset from screen sides.
 
+" Set gui options
+set guioptions -=m  " menu
+set guioptions -=T  " toolbar
+set guioptions -=r  " scrollbar
+
+
 "set tw=79  " Width of document.
 augroup tw_settings
     autocmd!
@@ -95,6 +101,7 @@ augroup tw_settings
     autocmd FileType perl set tw=79
     autocmd FileType javascript set tw=120
     autocmd FileType c set tw=120
+    autocmd FileType html set tw=120
 augroup END
 
 " Show tab and newlinel chars.
@@ -148,7 +155,8 @@ colorscheme gandalf | " xoria256
 "set guifont=courier_new:h10 | "for GUI!
 "set guifont=Anonymice\ Powerline:h10
 "set guifont=Menlo\ For\ Powerline:h9
-set guifont=Consolas\ For\ Powerline\ FixedD:h10
+"set guifont=Consolas\ For\ Powerline\ FixedD:h10
+set guifont=Courier\ New:h9
 " }}}
 
 " Search settings.
@@ -228,16 +236,6 @@ let g:miniBufExplMapWindowNavArrows = 1
 let g:miniBufExplMapCTabSwitchBufs = 1
 let g:miniBufExplModSelTarget = 1
 
-" Taglist stuff {{{
-" to make tags file in current directory type:
-" :!ctags -R *
-let Tlist_Ctags_cmd="/use/bin/ctags"
-let Tlist_WinWidth=50
-let Tlist_Process_File_Always=1
-nnoremap <F4> :TlistToggle<cr>
-nnoremap <F8> :!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
-" }}}
-"
 " ### Mappings ###
 " Insert mode mappings for braces and quote marks.
 inoremap {{     {}<left>
@@ -247,16 +245,87 @@ inoremap ((     ()<left>
 inoremap ""     ""<left>
 inoremap ''     ''<left>
 
-" HTML mappings.
-inoremap <<      <><left>
-inoremap </     </><left>
-inoremap <i     <img src="" /><esc>3hi
-inoremap <p     <p></p><esc>3hi
-inoremap <d     <div></div><esc>5hi
-inoremap <u     <u><cr></u><esc><Up>
-inoremap <i     <i></i><esc>3hi
-inoremap <in    <input type="" /><esc>3hi
+augroup html_mappings
+    autocmd!
+    "autocmd BufRead *.html set filetype=html
+    " Django template mappings.
+    autocmd FileType htmldjango :inoremap <buffer> %} {%  %}<esc>2hi
+    autocmd FileType htmldjango :inoremap <buffer> }} {{  }}<esc>2hi
+    autocmd FileType htmldjango :inoremap <buffer> %i {% if   %}<esc>3hi
+    autocmd FileType htmldjango :inoremap <buffer> %l {% else %}
+    autocmd FileType htmldjango :inoremap <buffer> %e {% endif %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %f {% for   in %}<esc>6hi
+    autocmd FileType htmldjango :inoremap <buffer> %ef {% endfor %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %c {% comment %}<esc>o<esc>
+    autocmd FileType htmldjango :inoremap <buffer> %ec {% endcomment %}<esc>o<esc>
 
+    " Basic HTML mappings.
+    " First autocmd should be checked because the indentation is not correct.
+    autocmd FileType html :inoremap <html <!DOCTYPE html><cr><html lang="en_us"><cr></html><esc>O<head><cr><tab><meta charset="utf-8"><cr><title></title><cr><link rel="stylesheet" type="text/css" href="" /><cr><script type="text/javascript" src=""></script><cr></head><esc>o<cr><body><cr></body><esc>
+    autocmd FileType html :inoremap }} {{  }}<esc>2hi
+    autocmd FileType html :inoremap <<  <><left>
+    autocmd FileType html :inoremap </ </><left>
+    autocmd FileType html :inoremap <img <img src="" /><esc>3hi
+    autocmd FileType html :inoremap <p <p></p><esc>3hi
+    autocmd FileType html :inoremap <u <u><cr></u><esc><Up>
+    autocmd FileType html :inoremap <i <i></i><esc>3hi
+    autocmd FileType html :inoremap <inp <input type="" /><esc>3hi
+    autocmd FileType html :inoremap <h1 <h1></h1><esc>4hi
+    autocmd FileType html :inoremap <h2 <h2></h2><esc>4hi
+    autocmd FileType html :inoremap <h3 <h3></h3><esc>4hi
+    autocmd FileType html :inoremap <h4 <h4></h4><esc>4hi
+    autocmd FileType html :inoremap <h5 <h5></h5><esc>4hi
+    autocmd FileType html :inoremap <h6 <h6></h6><esc>4hi
+    autocmd FileType html :inoremap <br <br /><cr>
+    autocmd FileType html :inoremap <buffer> <ul <ul><cr></ul><esc>O<li></li><esc>4hi
+    autocmd FileType html :inoremap <buffer> <sc <script type="text/javascript" src=""></script><esc>10hi
+    autocmd FileType html :inoremap <buffer> <s<cr> <script><cr></script><esc>O<tab>
+    autocmd FileType html :inoremap <buffer> <a <a href=""></a><esc>5hi
+    autocmd FileType html :inoremap <buffer> <abb <abbr title=""></abbr><esc>8hi
+    autocmd FileType html :inoremap <buffer> <ac <acronym title=""></acronym><esc>11hi
+    autocmd FileType html :inoremap <buffer> <ad <address></address><esc>9hi
+    autocmd FileType html :inoremap <buffer> <ar <area></area><esc>6hi
+    autocmd FileType html :inoremap <buffer> <at <article></aricle><esc>8hi
+    autocmd FileType html :inoremap <buffer> <as <aside></aside><esc>7hi
+    autocmd FileType html :inoremap <buffer> <au <audio controls><cr><source src="" type="audio/mpeg"></audio><esc>27hi
+    autocmd FileType html :inoremap <buffer> <b <b></b><esc>3hi
+    autocmd FileType html :inoremap <buffer> <ba <base href="" target="_blank"><esc>17hi
+    autocmd FileType html :inoremap <buffer> <bd <bdo dir="rtl"></bdo><esc>5hi
+    autocmd FileType html :inoremap <buffer> <bo <body><cr></body><esc>O
+    autocmd FileType html :inoremap <buffer> <bu <button type="button"></button><esc>8hi
+    autocmd FileType html :inoremap <buffer> <ca <canvas id=""></canvas><esc>10hi
+    autocmd FileType html :inoremap <buffer> <cp <caption></caption><esc>9hi
+    autocmd FileType html :inoremap <buffer> <ci <cite></cite><esc>6hi
+    autocmd FileType html :inoremap <buffer> <co <code></code><esc>6hi
+    autocmd FileType html :inoremap <buffer> <cl <col span="" style="" ><esc>11hi
+    autocmd FileType html :inoremap <buffer> <cg <colgroup></colgroup><esc>10hi
+    autocmd FileType html :inoremap <buffer> <dal <datalist><cr></datalist>O<option value="" ><esc>2hi
+    autocmd FileType html :inoremap <buffer> <dd <dd></dd><esc>4hi
+    autocmd FileType html :inoremap <buffer> <di <div></div><esc>5hi
+    autocmd FileType html :inoremap <buffer> <<di <div><cr></div><esc>O
+    autocmd FileType html :inoremap <buffer> <dl <dl><cr></dl>O
+    autocmd FileType html :inoremap <buffer> <dt <dt></dt><esc>4hi
+    autocmd FileType html :inoremap <buffer> <em <em></em><esc>4hi
+    autocmd FileType html :inoremap <buffer> <eb <embed src=""></embed><esc>7hi
+    autocmd FileType html :inoremap <buffer> <fi <fieldset><cr></fieldset><esc>O
+    autocmd FileType html :inoremap <buffer> <fg <figure><cr></figure><esc>O
+    autocmd FileType html :inoremap <buffer> <fg <figure><cr></figure><esc>O
+    autocmd FileType html :inoremap <buffer> <ft <footer></footer><esc>8hi
+    autocmd FileType html :inoremap <buffer> <fo <form action="" method=""><cr></form><esc>O
+    autocmd FileType html :inoremap <buffer> <he <head><cr></head><esc>O
+    autocmd FileType html :inoremap <buffer> <tx <textarea name="" id="" cols="" rows=""></textarea><esc>10hi
+
+    autocmd FileType html :inoremap <buffer> <st <script><cr></script><esc>O
+    autocmd FileType html :inoremap <buffer> <st <style><cr></style><esc>O
+
+
+    """""" Next is for commenting out visual selection!
+    autocmd FileType html :vnoremap <buffer> <leader>c <esc>a--><esc>'<i<!--<esc>'>$
+    " for commenting out css line
+    "autocmd FileType html :nnoremap <leader>/* <esc>I/* <esc>A */<esc>
+    " jQuery ready function.
+    autocmd FileType html :inoremap <buffer>jqre $(document).ready(function() {<cr>});<esc>O
+augroup END
 " C, JavaScript comment mappings.
 inoremap /*     /**/<Left><Left>
 inoremap /*<cr> /*<cr>*/<Left><Left><Space>*<Space><cr><Up><Right><Right>
@@ -292,20 +361,6 @@ augroup code_commenting
     autocmd FileType php nnoremap <buffer> <localleader>c I//
     autocmd FileType python nnoremap <buffer> <localleader>c I#
 augroup END
-
-"augroup code_snipets
-"    autocmd!
-"    autocmd FileType python :inoremap <buffer> iff if :<left>
-"    autocmd FileType javascript :inoremap <buffer>
-"                \ iff if (; ; ) {<cr>}<esc>O;<esc><up>$5hi<left>
-"    autocmd FileType c :inoremap <buffer>
-"                \ iff if (; ; ) {<cr>}<esc>O;<esc><up>$5hi<left>
-"    autocmd FileType vim :inoremap <buffer>
-"                \ iff if <cr>endif<esc><up>A
-"    autocmd FileType vim :inoremap <buffer> ww while <cr>endwhile<esc><up>A
-"    autocmd FileType vim :inoremap <buffer> funn function! <cr><cr>endfunction<esc>2<u>A
-"    autocmd FileType vim :inoremap <buffer> aa BBBB
-"augroup END
 
 " Normal mode mapings.
 " Tab mapings.
@@ -344,11 +399,12 @@ nnoremap <leader><space> i <esc><right>a <left><esc>
 " Now you can install any plugin into a .vim/bundle/plugin-name/ folder
 call pathogen#infect()
 
+" NOT TESTED ON WINDOWS
 " Settings for Python IDE environment
 " cd ~/.vim/bundle
 " git clone git://github.com/Lokaltog/vim-powerline.git
 " laststaus=0 -> never, =1 -> default (2 or more windows) and =2 -> always.
-let g:Powerline_symbols="fancy"
+"let g:Powerline_symbols="fancy"
 "call Pl#Theme#InsertSegment('ws_marker', 'after', 'lineinfo')
 "set rtp+=/home/robi/.vim/bundle/powerline/powerline/bindings/vim
 set laststatus=2
@@ -390,8 +446,12 @@ endfunction
 "inoremap <silent><C-j> <C-R>=OmniPopup('j')<cr>
 "inoremap <silent><C-k> <C-R>=OmniPopup('k')<cr>
 
-iabbrev k@ <robert.kolozsi@gmail.com>
-iabbrev kr Kolozsi Róbert
+augroup iabb
+    autocmd!
+    autocmd :iabbrev <buffer> @@ <robert.kolozsi@gmail.com>
+    autocmd :iabbrev <buffer> krhu Kolozsi Róbert
+    autocmd :iabbrev <buffer> krsr Robert Koloži
+augroup END
 
 " Select entire buffer
 nnoremap sa ggVG
