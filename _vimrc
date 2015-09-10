@@ -446,12 +446,9 @@ endfunction
 "inoremap <silent><C-j> <C-R>=OmniPopup('j')<cr>
 "inoremap <silent><C-k> <C-R>=OmniPopup('k')<cr>
 
-augroup iabb
-    autocmd!
-    autocmd :iabbrev <buffer> @@ <robert.kolozsi@gmail.com>
-    autocmd :iabbrev <buffer> krhu Kolozsi Róbert
-    autocmd :iabbrev <buffer> krsr Robert Koloži
-augroup END
+iabbrev <buffer> @@ <robert.kolozsi@gmail.com>
+iabbrev <buffer> krhu Kolozsi Róbert
+iabbrev <buffer> krsr Robert Koloži
 
 " Select entire buffer
 nnoremap sa ggVG
