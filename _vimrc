@@ -109,7 +109,7 @@ set list
 set listchars=tab:→\ ,eol:¬,extends:>,precedes:<
 
 set linespace=0 " Number of pixel lines inserted between characters.
-set shell=/bin/bash\ --login
+"set shell=/bin/bash\ --login
 " set lazyredraw
 set matchtime=3
 " set showbreak=-
