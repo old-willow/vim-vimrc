@@ -67,7 +67,10 @@ set shiftround "" Don't understand what is this for.
 
 " Indentention
 set autoindent
-set smartindent
+" set smartindent / this couses that when I type # in python code then it jups
+" to the first place on the line regardless I am in indentation.
+" cindent seams to solve it, so far.
+set cindent
 "
 " This should switch of the no indent in python comment
 " when typing # in new line. The ^H characters are
@@ -282,10 +285,13 @@ nnoremap <F8> :!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
 " ### Mappings ###
 " Insert mode mappings for braces and quote marks.
 inoremap {{     {}<left>
+inoremap }}     {}<right>
 inoremap {<cr>  {<cr>}<esc>O
 inoremap [[     []<left>
+inoremap ]]     []<right>
 inoremap [<cr>  [<cr>]<esc>O
 inoremap ((     ()<left>
+inoremap ))     ()<right>
 inoremap (<cr>  (<cr>)<esc>O
 inoremap ""     ""<left>
 inoremap ''     ''<left>
