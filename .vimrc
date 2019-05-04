@@ -20,6 +20,16 @@ autocmd Filetype *
             \	endif
     endif
 
+" Seting up Pathogen for management of plugins.
+" mkdir -p ~/.vim/autoload ~/.vim/bundle
+" curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
+" Now you can install any plugin into a .vim/bundle/plugin-name/ folder
+filetype off
+
+call pathogen#infect()
+execute pathogen#infect()
+"call pathogen#helptags()
+
 " <<leader>> key
 let mapleader=","
 " maplocalleader mappings that only take effect for certain types of files.
@@ -27,9 +37,13 @@ let maplocalleader="\\"
 
 
 " Powerline setup.
-python from powerline.vim import setup as powerline_setup
-python powerline_setup()
-python del powerline_setup
+"python from powerline.vim import setup as powerline_setup
+"python powerline_setup()
+"python del powerline_setup
+
+" airline-powerline
+"let g:airlilne_powerline_fonts=1
+
 
 " Selection stays while moving indentation.
 vnoremap < <gv
@@ -37,11 +51,11 @@ vnoremap > >gv
 
 " Show whitespace
 " Must be inserted before the colorscheme command
-augroup extra_white
-    autocmd!
-    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=89 guibg=#87005f
-    au InsertLeave * match ExtraWhitespace /\s\+$/
-augroup END
+"augroup extra_white
+"    autocmd!
+"    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=89 guibg=#87005f
+"    au InsertLeave * match ExtraWhitespace /\s\+$/
+"augroup END
 
 " Undo stuff.
 set history=1000
@@ -52,13 +66,15 @@ set undodir=~/.vim/undodir
 
 runtime macros/matchit.vim "This is for tag matching with '%'
 
-"Seting $ sign while editing and things you changing
+"Setting $ sign while editing and things you changing
 "set cpoptions+=$
 
 "Setting the virtualedit mode
 "set virtualedit all
 
-set expandtab " Use spaces instad tab.
+" Need this mainly for Python
+" NOTE: Consider limiting this only to Python in future.
+set expandtab " Use spaces instad of tabs.
 set smarttab
 set tabstop=4
 set softtabstop=4
@@ -89,9 +105,9 @@ set modeline
 set modelines=1 " The las line in the file e.g. " vim: someoption=val:
 set showmode
 set showcmd
-set hidden "Keep undo history when switching buffers??? Don't know yet what is this!!!!!
+set hidden " Keep undo history when switching buffers??? Don't know yet what is this!!!!!
 set ttyfast
-set lazyredraw  " This solved vim's slow response when syntax higlighting in on.
+set lazyredraw  " This solved vim's slow response when syntax higlighting is on.
 " set backspace=indent,eol,start
 set showmatch
 set title
@@ -100,8 +116,11 @@ set number
 "set nonumber
 "set norelativenumber
 "set relativenumber
+
+" Options form searching
 "set ignorecase
 set smartcase
+
 set scrolloff=3 " Cursor offset from screen sides.
 "set tw=120  " Width of document.
 "set colorcolumn=+1  " Related to the 'tw' setting above.
@@ -112,7 +131,6 @@ set listchars=tab:→\ ,eol:⏎,extends:>,precedes:<
 
 set linespace=0 " Number of pixel lines inserted between characters.
 set shell=/bin/bash\ --login
-" set lazyredraw
 set matchtime=3
 " set showbreak=-
 set splitbelow
@@ -145,7 +163,7 @@ set linebreak
 " Clean old highlight searches
 augroup no_highlighting
     au!
-    au! FileType * nohl
+    au! FileType * noh
 augroup END
 
 augroup python_editing
@@ -183,16 +201,17 @@ augroup END
 " Color Schemas {{{
 "
 " Solarized colorscheme setup for terminal.
-"let g:solarized_termcolors=256
-"set background=light
-set background=dark
-"colorscheme solarized
+let g:solarized_termcolors=256
+set background=light
+"set background=dark
+set background=light
+colorscheme solarized
 
 " Personal color scheme settings.
 set t_Co=256
 "colorscheme gandalf-transparent " based on gandalf scheme
-colorscheme gandalf " mixed and based on xoria256 & solarized
-set guifont=courier_new:h10 | "for GUI!
+"colorscheme gandalf " mixed and based on xoria256 & solarized
+"set guifont=courier_new:h10 | "for GUI!
 " }}}
 
 " Search settings.
@@ -200,27 +219,25 @@ set guifont=courier_new:h10 | "for GUI!
 " execute 'normal! <silent> :nohlsearch\<cr>'
 set hlsearch
 set incsearch
-"set ignorecase
-set smartcase
 
 " Backup & Swap files. {{{
 " Creating and setting the .backup and .swap directories.
-set backup
-set swapfile
-set backupdir=./.backup,~/tmp
-set directory=./.swap,~/tmp
+"set backup
+"set swapfile
+"set backupdir=./.backup,~/tmp
+"set directory=./.swap,~/tmp
 " Creating localy .backup & .swap directory
 " if there are not existing in current/working dir.
-autocmd! BufWritePre * :call CheckBackupSwapDirs()
-function! CheckBackupSwapDirs()
-    if !isdirectory("./.backup") && filewritable(".")
-        silent execute "normal! :!mkdir .backup\<cr>"
-    endif
-
-    if !isdirectory("./.swap") && filewritable(".")
-        silent execute "normal! :!mkdir .swap\<cr>"
-    endif
-endfunction
+"autocmd! BufWritePre * :call CheckBackupSwapDirs()
+"function! CheckBackupSwapDirs()
+"    if !isdirectory("./.backup") && filewritable(".")
+"        silent execute "normal! :!mkdir .backup\<cr>"
+"    endif
+"
+"    if !isdirectory("./.swap") && filewritable(".")
+"        silent execute "normal! :!mkdir .swap\<cr>"
+"    endif
+"endfunction
 "set nobackup
 "set nowritebackup
 "set noswapfile
@@ -250,7 +267,7 @@ set foldcolumn=4
 " Clipboard. Can't understand why but this makes possible to copy/paste between applications.
 "set clipboard=unnamed
 "set clipboard=unnamed
-set clipboard=unnamedplus " Sets all yenks and dels to the system clipbard.
+set clipboard=unnamedplus " Sets all yanks and dels to the system clipbard.
 "set clipboard+=autoselect
 "set nopaste
 "set paste
@@ -286,6 +303,8 @@ nnoremap <F8> :!/usr/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<cr>
 " Insert mode mappings for braces and quote marks.
 inoremap {{     {}<left>
 inoremap }}     {}<right>
+inoremap %}     {%  %}<esc>2hi
+inoremap 2}     {{  }}<esc>2hi
 inoremap {<cr>  {<cr>}<esc>O
 inoremap [[     []<left>
 inoremap ]]     []<right>
@@ -296,22 +315,6 @@ inoremap (<cr>  (<cr>)<esc>O
 inoremap ""     ""<left>
 inoremap ''     ''<left>
 
-"inoremap <<      <><left>
-"inoremap </     </><left>
-"inoremap <i     <img src="" /><esc>3hi
-"inoremap <p     <p></p><esc>3hi
-"inoremap <d     <div></div><esc>5hi
-""inoremap <u     <u><cr></u><esc><Up>
-"inoremap <i     <i></i><esc>3hi
-"inoremap <in    <input type="" /><esc>3hi
-
-
-" Java omnicomplete {{{
-"if has("autocmd")
-"    :autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-"endif
-" }}}
-
 " Have to restart vim if adding autocmd.
 " HTML mappings.
 augroup html_mappings
@@ -319,7 +322,7 @@ augroup html_mappings
     "autocmd BufRead *.html set filetype=html
     " Django template mappings.
     autocmd FileType htmldjango :inoremap <buffer> %} {%  %}<esc>2hi
-    autocmd FileType htmldjango :inoremap <buffer> }} {{  }}<esc>2hi
+    autocmd FileType htmldjango :inoremap <buffer> 2} {{  }}<esc>2hi
     autocmd FileType htmldjango :inoremap <buffer> %i {% if   %}<esc>3hi
     autocmd FileType htmldjango :inoremap <buffer> %l {% else %}
     autocmd FileType htmldjango :inoremap <buffer> %e {% endif %}<esc>o<esc>
@@ -384,7 +387,7 @@ augroup html_mappings
     autocmd FileType html :inoremap <buffer> <he <head><cr></head><esc>O
     autocmd FileType html :inoremap <buffer> <tx <textarea name="" id="" cols="" rows=""></textarea><esc>10hi
 
-    autocmd FileType html :inoremap <buffer> <st <script><cr></script><esc>O
+    autocmd FileType html :inoremap <buffer> <sc <script><cr></script><esc>O
     autocmd FileType html :inoremap <buffer> <st <style><cr></style><esc>O
 
 
@@ -411,7 +414,7 @@ inoremap /*<cr> /*<cr>*/<Left><Left><Space>*<Space><cr><Up><Right><Right>
 " Remap jk for getting in to the normal mode. <esc> is so far away.
 inoremap kj <esc>
 
-" In case I fall in to a temptation!
+" In case I fall into a temptation!
 inoremap <esc> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
@@ -456,10 +459,10 @@ nnoremap ttd :tabclose<cr>
 nnoremap <s-l> :tabnext<cr>
 nnoremap <s-h> :tabprevious<cr>
 
-" Move up the current line.
-nnoremap <leader>- ddp
 " Move down the current line.
-nnoremap <leader>_ dd<up>P
+nnoremap <leader>- ddp
+" Move up the current line.
+nnoremap <leader>-- dd<up>P
 " Put this line between two blank lines.
 nnoremap <leader>= O<esc><down>o<esc><up>
 
@@ -474,9 +477,6 @@ nnoremap <leader>ww ea"<esc>bi"<esc>
 nnoremap <leader>l I'<esc>A'<esc>
 nnoremap <leader>ll I"<esc>A"<esc>
 
-" Wrap a whole visual selection in curly braces.
-" vnoremap <leader>cb
-
 " Wrap the selection with single and double quote.
 vnoremap <leader>s <esc>`>a'<esc>`<i'<esc>
 vnoremap <leader>ss <esc>`>a"<esc>`<i"<esc>
@@ -484,20 +484,6 @@ vnoremap <leader>ss <esc>`>a"<esc>`<i"<esc>
 " One white space before and after some character/operator.
 nnoremap <leader><space> i <esc><right>a <left><esc>
 
-" Seting up Pathogen for management of plugins.
-" mkdir -p ~/.vim/autoload ~/.vim/bundle
-" curl -Sso ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
-" Now you can install any plugin into a .vim/bundle/plugin-name/ folder
-filetype off
-
-"call pathogen#infect()
-execute pathogen#infect()
-"call pathogen#helptags()
-
-filetype plugin indent on
-syntax on
-
-" Settings for Python IDE environment
 " cd ~/.vim/bundle
 " git clone git://github.com/Lokaltog/vim-powerline.git
 " laststaus=0 -> never, =1 -> default (2 or more windows) and =2 -> always.
@@ -509,6 +495,7 @@ set laststatus=2
 " Settings for ctrlp
 " cd ~/.vim
 " git clone https://github.com/kien/ctrlp.vim.git bundle/ctrlp.vim
+set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_max_height=30
 set wildignore+=*.pyc
 set wildignore+=*_build/*
@@ -566,13 +553,6 @@ function! OmniPopup(action)
     return a:action
 endfunction
 
-" ????????????????????
-"inoremap <silent><C-j> <C-R>=OmniPopup('j')<cr>
-"inoremap <silent><C-k> <C-R>=OmniPopup('k')<cr>
-
-iabbrev k@ <robert.kolozsi@gmail.com>
-iabbrev kr Kolozsi Róbert
-
 " Select entire buffer
 nnoremap sa ggVG
 
@@ -610,5 +590,30 @@ let g:SignatureWrapJumps=1
 
 " Some shortcuts from
 " http://eastcoastefx.vaesite.com/vim
+
+" Nerdtree
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeDirArrows = 1
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+noremap <leader>nt :NERDTreeToggle<cr>
+
+" Nerdtree-git-plugin
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
+" let g:NERDTreeShowIgnoredStatus = 1
+
+iabbrev k@ <robert.kolozsi@gmail.com>
+iabbrev kr Kolozsi Róbert
 
 " vim: set tw=79 colorcolumn=+1:
