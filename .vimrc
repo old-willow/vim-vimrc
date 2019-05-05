@@ -142,7 +142,7 @@ set autoread
 set shiftround
 set linebreak
 set fileformat=unix " (&ffs)
-" set dictionary=/home/robi/dict/words
+set dictionary=/usr/share/dict/words
 " set spellfile=~/.vim/spell/hunspchk.vim
 
 " Don't try to highlight lines longer then 200 characters.
